@@ -12,3 +12,5 @@ gen
 .idea/misc.xml
 .idea/modules.xml
 .idea/workspace.xml
+
+\.ipynb_checkpoints/

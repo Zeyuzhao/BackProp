@@ -1,14 +1,24 @@
 import numpy as np
-
+import pickle
+import copy
 from neural.mnist_prep import MnistPrepper
 
 
 class NeuralNet():
-    def __init__(self, sizes):
-        self.sizes = sizes
-        self.numLayers = len(sizes)
-        self.weights = [np.random.randn(y, x) for x, y in zip(sizes[:-1], sizes[1:])]
-        self.bias = [np.random.randn(y, 1) for y in sizes[1:]]
+    def __init__(self, sizes=None, fileName=None):
+        if (fileName is None):
+            self.sizes = sizes
+            self.numLayers = len(sizes)
+            self.weights = [np.random.randn(y, x) for x, y in zip(sizes[:-1], sizes[1:])]
+            self.bias = [np.random.randn(y, 1) for y in sizes[1:]]
+        else:
+            infile = open(fileName, 'rb')
+            loadNN = pickle.load(infile)
+            infile.close()
+            self.sizes = copy.deepcopy(loadNN.sizes)
+            self.numLayers = copy.deepcopy(loadNN.numLayers)
+            self.weights = copy.deepcopy(loadNN.weights)
+            self.bias = copy.deepcopy(loadNN.bias)
 
     def createBatches(self, trainingData, size):
         return [trainingData[i: i + size] for i in range(0, len(trainingData), size)]
@@ -72,8 +82,11 @@ class NeuralNet():
         deriv = [sig * (1 - sig) for sig in activ]
         return activ, deriv
 
-    def fowardRun(self, input):
+    def fowardPrb(self, input):
         return self.fowardProp(input)[0][-1]
+
+    def fowardCompute(self, input):
+        return np.argmax(self.fowardPrb(input))
 
     def sigmoid(self, v):
         return (1 / (1 + np.exp(-v)))
@@ -81,21 +94,11 @@ class NeuralNet():
     def sigmoidPrime(self, v):
         sig = self.sigmoid(v)
         return sig * (1 - sig)
+    def storeNN(self, fileName):
+        out = open(fileName, "w+b")
+        pickle.dump(self, out)
+        out.close()
 
 if __name__ == '__main__':
-    dim = (784, 100, 10)
-    tester = NeuralNet(dim)
-
-
-    #testX = np.asarray([0,1,0]).reshape(3,1)
-    #f = tester.fowardRun(testX)
-    #gw, gb = tester.backProp((testX, np.ones((3,1))))
-
-
-    #testData = [i for i in range(10)]
-    #print(tester.createBatches(testData, 4))
-    training_data, validation_data, testing_data = MnistPrepper().processData()
-
-
-    tester.train(training_data, 30, 3, 1)
-    print(tester.fowardRun(training_data[0][0]))
+    test = NeuralNet((3, 3, 3))
+    test.storeNN("../data/test.pkl")
