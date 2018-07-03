@@ -5,14 +5,17 @@ from neural.mnist_loader import load_data
 
 
 
+#Dimensions of the number of subplots
 length = 8
 width = 8
-imgID = 200
+
+#Where to start within the set of images
+imgID = 0
 
 f, axarr = plt.subplots(length, width, figsize=(6,8))
 
 f.suptitle("MNIST data set from pic {0} to {1}".format(imgID, imgID + length * width - 1))
-# Extract the sets of data, X and y, from training data
+# Extract the sets of data, X and y, 98from training data
 
 training_data, validation_data, test_data = load_data()
 
