@@ -1,19 +1,21 @@
 import numpy as np
 
-from neural.main import *
+from neural.mainMatrix import *
 
 
 stored = NeuralNet(fileName="../data/mnistNN_L4_E30.pkl")
 training_data, validation_data, testing_data = MnistPrepper().processData()
 
+
 numCorrect = 0
 
-length = 8
-width = 8
+length = 10
+width = 10
 
 start = 200
 numItems = length * width
 yArray = []
+
 for i in range(numItems):
     imgID = start + i
     l = testing_data[imgID][1]

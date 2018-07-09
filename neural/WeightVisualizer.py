@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import itertools
 
-
 """
 showImgs()
 
@@ -18,7 +17,7 @@ length: Length of the grid of samples
 width: Width of the grid of samples
 predictedY: Show the output of a neural network along with 
 """
-def showImgs(imgSet, start, length, width, predictedY=None):
+def weightsVisualizer(imgSet, start, length, width, predictedY=None):
 
     #Where to start within the set of images
     imgID = start
@@ -47,6 +46,3 @@ def showImgs(imgSet, start, length, width, predictedY=None):
 
     # Finally Done!
     plt.show()
-
-
-
